@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchCount } from './counterAPI';
+import {fetchCount, updateCount} from './counterAPI';
 
 const initialState = {
   value: 0,
@@ -31,13 +31,16 @@ export const counterSlice = createSlice({
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
       state.value += 1;
+      updateCount(state.value);
     },
     decrement: (state) => {
       state.value -= 1;
+      updateCount(state.value);
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
     incrementByAmount: (state, action) => {
       state.value += action.payload;
+      updateCount(state.value);
     },
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -50,6 +53,7 @@ export const counterSlice = createSlice({
       .addCase(incrementAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         state.value += action.payload;
+        updateCount(state.value);
       });
   },
 });

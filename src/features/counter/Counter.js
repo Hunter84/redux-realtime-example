@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   decrement,
@@ -16,6 +16,14 @@ export function Counter() {
   const [incrementAmount, setIncrementAmount] = useState('2');
 
   const incrementValue = Number(incrementAmount) || 0;
+
+  useEffect(() => {
+    fetch('https://us-central1-redux-realtime-example.cloudfunctions.net/getTimer?uid=' + Math.floor(Math.random() * 20))
+        .then(response => response.json()).then((data) => {
+      console.log(data, '123123123');
+      dispatch(incrementByAmount(data.count));
+    });
+  }, []);
 
   return (
     <div>
